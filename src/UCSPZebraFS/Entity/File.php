@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * File
  *
  * @ORM\Table()
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="UCSPZebraFS\Entity\FileRepository")
  */
 class File
 {
@@ -20,13 +20,6 @@ class File
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="realName", type="string", length=255)
-     */
-    private $realName;
 
     /**
      * @var string
@@ -57,6 +50,13 @@ class File
      */
     private $server;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="status", type="boolean")
+     */
+    private $status;
+
 
     /**
      * Get id
@@ -68,28 +68,6 @@ class File
         return $this->id;
     }
 
-    /**
-     * Set realName
-     *
-     * @param string $realName
-     * @return File
-     */
-    public function setRealName($realName)
-    {
-        $this->realName = $realName;
-
-        return $this;
-    }
-
-    /**
-     * Get realName
-     *
-     * @return string
-     */
-    public function getRealName()
-    {
-        return $this->realName;
-    }
 
     /**
      * Set nameStored
@@ -181,9 +159,20 @@ class File
         $this->id = null;
     }
 
-    public function foo()
+    /**
+     * @return string
+     */
+    public function getStatus()
     {
-        return true;
+        return $this->status;
+    }
+
+    /**
+     * @param string $status
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
     }
 
 }

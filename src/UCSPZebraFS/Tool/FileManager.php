@@ -1,58 +1,39 @@
 <?php
 
 namespace UCSPZebraFS\Tool;
-use UCSPZebraFS\Entity\Server;
 
+use Silex\Application;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use UCSPZebraFS\Entity\File;
+use Doctrine\Common\Util\Debug;
 class FileManager
 {
-    private $host;
-    private $user;
-    private $password;
-    private $path;
+    private $app;
 
-    public function __construct(Server $server)
+    public function __construct(Application $app)
     {
-        $this->host = $server->getHostname();
-        $this->user = $server->getUser();
-        $this->password = $server->getPassword();
-        $this->path = "/";
+        $this->app = $app;
     }
 
-    public function upload($file, &$url)
+    public function create(UploadedFile $raw)
     {
-        $conn_id = ftp_connect($this->host);
+        $file = new File();
 
-        $login_result = ftp_login($conn_id, $this->user, $this->password);
+        $similarFiles = $this->app['orm.em']->getRepository("UCSPZebraFS\Entity\File")->getSimilarSizFiles($raw->getSize());
 
-        $rfile = "";
-        do{
-            $rfile = $this->easyRandom();
-        }while($this->exist($rfile));
+        if($similarFiles > 2)
+        {
+            die("Existen archivos que pueden ser usados");
+        }
 
-        $result = (ftp_put($conn_id, $rfile . '.bin', $file, FTP_BINARY)) ? true: false;
+        $file->setMimetype($raw->getMimeType());
+        $file->setSize($raw->getSize());
+        $file->setNameStored($this->easyRandom());
+        $file->setStatus(0);
 
-        ftp_close($conn_id);
-
-        $url = $this->path . $rfile . '.bin';
-        return $result;
-    }
-
-    public function exist($file)
-    {
-        $conn_id = ftp_connect($this->host);
-
-        $login_result = ftp_login($conn_id, $this->user, $this->password);
-
-        $result = (ftp_size($conn_id, $file . '.bin') != -1) ? true : false;
-
-        ftp_close($conn_id);
-
-        return $result;
-    }
-
-    public function getURL($file)
-    {
-        return ($this->exist($file)) ? $this->path . $file . '.bin' : false;
+        $this->app['orm.em']->persist($file);
+        $this->app['orm.em']->flush();
+        die("subido");
     }
 
     public function easyRandom()

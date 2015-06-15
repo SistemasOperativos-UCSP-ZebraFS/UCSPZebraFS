@@ -2,4 +2,8 @@
 
 use Knp\Provider\ConsoleServiceProvider;
 
-require_once __DIR__.'/../bootstrap.php';
+$app = require_once __DIR__.'/../bootstrap.php';
+
+$app['debug'] = true;
+
+$app->run();

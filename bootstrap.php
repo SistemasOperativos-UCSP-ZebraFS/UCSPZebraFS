@@ -5,6 +5,7 @@ use Knp\Provider\ConsoleServiceProvider;
 use Silex\Provider\DoctrineServiceProvider;
 use Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider;
 use UCSPZebraFS\Tool\FileManager;
+use UCSPZebraFS\Controller\FileController;
 
 require_once __DIR__.'/vendor/autoload.php';
 
@@ -35,5 +36,7 @@ $app->register(new DoctrineOrmServiceProvider, array(
         ),
     ),
 ));
+
+$app->mount("/file", new FileController());
 
 return $app;
