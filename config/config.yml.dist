@@ -1,0 +1,7 @@
+database:
+  driver:   'pdo_mysql'
+  server:   'localhost'
+  user:     'root'
+  password: ''
+  dbname:   'UCSPZebraFS'
+  charset:  'utf8'
