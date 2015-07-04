@@ -46,4 +46,20 @@ class FileManager
 
         return $string;
     }
+
+    public function createParity($file1, $file2, $file3)
+    {
+        $gestor = fopen($file1, "rb");
+        $f1 = stream_get_contents($gestor);
+        $gestor = fopen($file2, "rb");
+        $f2 = stream_get_contents($gestor);
+        $gestor = fopen($file3, "rb");
+        $f3 = stream_get_contents($gestor);
+
+        $b1 = unpack('n*', $f1);
+        $b2 = unpack('n*', $f2);
+        $b3 = unpack('n*', $f3);
+
+        fclose($gestor);
+    }
 }
