@@ -24,7 +24,7 @@ $app->register(new DoctrineServiceProvider, array(
 ));
 
 $app->register(new DoctrineOrmServiceProvider, array(
-    "orm.proxies_dir" => "/cache/proxies",
+    "orm.proxies_dir" => "cache/proxies",
     "orm.em.options" => array(
         "mappings" => array(
             array(

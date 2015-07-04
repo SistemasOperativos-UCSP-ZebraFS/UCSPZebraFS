@@ -24,16 +24,10 @@ class FTPManager
 
         $login_result = ftp_login($conn_id, $this->user, $this->password);
 
-        $rfile = "";
-        do{
-            $rfile = $this->easyRandom();
-        }while($this->exist($rfile));
-
-        $result = (ftp_put($conn_id, $rfile . '.bin', $file, FTP_BINARY)) ? true: false;
+        $result = (ftp_put($conn_id, $url . '.bin', $file, FTP_BINARY)) ? true: false;
 
         ftp_close($conn_id);
 
-        $url = $this->path . $rfile . '.bin';
         return $result;
     }
 
